@@ -108,105 +108,135 @@ where deal_stage like 'Lost' and close_date is not null
 group by manager,deal_stage
 order by count desc
 ```
-### Deals Still Not Concluded by Each Team
+#### Deals Still Not Concluded by Each Team
 --Which team still has the most deals still not concluded?
-```
+```sql
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
 where deal_stage like 'Engaging' and close_date is null
 group by manager,deal_stage 
 order by count desc
 ```
+#### Number of Prospects by Each Team
 --Which team has the highest number of prospects?
+```sql
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
 where deal_stage like 'Prospecting' and close_date is null and engage_date is null
 group by manager,deal_stage 
 order by count desc
-
--- now we want to look at the above numbers side by side
+```
+#### Side-by-Side Comparison of Deal Stages
+```sql
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
 group by manager,deal_stage
 order by manager, count desc
-
----What product type has had the most successfull(won) deaals?
+```
+#### Most Successful Product Types
+--What product type has had the most successfull(won) deaals?
+```sql
 select product, count(product) as Count
 from SALES_pip
 where deal_stage like 'Won' and close_date is not null
 group by product
 order by count desc
-
---number of won product sales opportunities of each sales manager	
+```
+#### Number of Won Product Sales Opportunities by Each Sales Manager
+```sql
 select manager, product, count(product) as count
 from SALES_pip
 where engage_date is not null and close_date is not null and deal_stage like 'Won'
 group by manager, product
 order by manager,count  desc
+```
 
-select * from SALES_pip
-
+#### Sales Closed Above Sales Price per Team
 --How many sales were closed above the sales price per team?
+```sql
 select manager, count(close_value) as count
 from SALES_pip
 where sales_price < close_value and close_date is not null
 group by manager
 order by count desc
+```
 
+#### Sales Closed Below Sales Price per Team
 --How many sales were closed below sales perice for each team?
+```sql
 select manager, count(close_value) as count
 from SALES_pip
 where sales_price > close_value and close_date is not null
 group by manager
 order by count desc
+```
 
+#### Count of Won Deals Over Time
 --How has the count of won deals changed over time?
+```sql
 select engage_date, count(deal_stage) as count
 from SALES_pip
 where close_date is not null and deal_stage like 'Won'
 group by engage_date, deal_stage
 order by engage_date
+```
 
+#### Count of Lost Deals Over Time
 --How has the count of lost deals changed overtime?
+```sql
 select engage_date, count(deal_stage) as count
 from SALES_pip
 where close_date is not null and deal_stage like 'Lost'
 group by engage_date, deal_stage
 order by engage_date
+```
 
+#### Highest Revenue by Regional Office
 ---Which regional office generated the highest revenue?
+```sql
 select regional_office, sum(close_value) as Revenue
 from SALES_pip
 where close_date is not null
 group by regional_office
 order by Revenue desc
+```
 
+#### Highest Revenue by each team per Regional Office
 --which teams generated the most revenue within each regional office?
-
+```sql
 select regional_office,manager, sum(close_value) as Revenue
 from SALES_pip
 where close_date is not null
 group by regional_office,manager
 order by Revenue desc
+```
 
+#### Top 5 Sales Agents Overall
 --Who are the top 5 sales agents overall?
+```sql
 select top 5 sales_agent, regional_office, manager, sum(close_value) as Revenue
 from SALES_pip
 where close_date is not null	
 group by sales_agent,regional_office,manager
 order by Revenue desc
-
-
---Who are the top 5 sales agents who had a close value higher than the sales price?
+```
+#### Top 5 Sales Agents with Close Value Higher than Sales Price
+--Who are the top 5 sales agents who had a close value higher than the sales price?  It provides insights into the performance of individual sales agents and highlights those who have successfully negotiated higher deal values.
+```sql
 select top 5 sales_agent, regional_office, manager, sum(close_value) as Revenue
 from SALES_pip
 where close_date is not null and sales_price < close_value	
 group by sales_agent,regional_office,manager
 order by Revenue desc
+```
+Understanding which sales agents consistently close deals above the sales price can help in recognizing top performers, setting benchmarks for other agents, and developing targeted training programs to improve negotiation skills across the team.
 
----What is the general performance of each sales agent? How much Revenue was brough in by each agent?
+#### General Performance of Each Sales Agent
+---What is the general performance of each sales agent? How much Revenue was brough in by each agent? It provides insights into the contributions of individual sales agents to the overall sales performance.
+```sql
 select sales_agent, regional_office, manager, sum(close_value) as Revenue
 from SALES_pip
 where close_date is not null	
 group by sales_agent,regional_office,manager
 order by Revenue desc
+```
