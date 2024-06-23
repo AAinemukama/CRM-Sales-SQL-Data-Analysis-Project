@@ -91,7 +91,7 @@ order by Revenue desc
 ```
 
 #### Sales Opportunities won by each sales Manager
---How many sales opportunities have been won for each sales manager? Whose team has won the most deals?
+--How many sales opportunities have been won for each sales manager? Whose team won the most deals?
 ```sql
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
@@ -99,22 +99,24 @@ where deal_stage like 'Won' and close_date is not null
 group by manager,deal_stage
 order by count desc
 ```
+#### Sales Opportunities Lost by Each Sales Manager
 --whose team lost the most deals?
-
+```sql
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
 where deal_stage like 'Lost' and close_date is not null
 group by manager,deal_stage
 order by count desc
-
---Which team still has the most deals still not concluded"
-
+```
+### Deals Still Not Concluded by Each Team
+--Which team still has the most deals still not concluded?
+```
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
 where deal_stage like 'Engaging' and close_date is null
 group by manager,deal_stage 
 order by count desc
-
+```
 --Which team has the highest number of prospects?
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
