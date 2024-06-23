@@ -91,7 +91,8 @@ order by Revenue desc
 ```
 
 #### Sales Opportunities won by each sales Manager
---How many sales opportunities have been won for each sales manager? Whose team won the most deals?
+-- Identifies which teams are most effective at closing deals and generating revenue.
+
 ```sql
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
@@ -100,7 +101,8 @@ group by manager,deal_stage
 order by count desc
 ```
 #### Sales Opportunities Lost by Each Sales Manager
---whose team lost the most deals?
+-- Identifies which sales managers need additional support or training to improve their team’s performance and reduce lost deals.
+
 ```sql
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
@@ -108,8 +110,10 @@ where deal_stage like 'Lost' and close_date is not null
 group by manager,deal_stage
 order by count desc
 ```
+
 #### Deals Still Not Concluded by Each Team
---Which team still has the most deals still not concluded?
+-- Identifies which teams have the most ongoing deals, helping to focus efforts on closing these opportunities.
+
 ```sql
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
@@ -117,8 +121,9 @@ where deal_stage like 'Engaging' and close_date is null
 group by manager,deal_stage 
 order by count desc
 ```
+
 #### Number of Prospects by Each Team
---Which team has the highest number of prospects?
+-- Identifies which teams have the most potential leads, helping to prioritize follow-up efforts and resource allocation
 ```sql
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
@@ -127,14 +132,16 @@ group by manager,deal_stage
 order by count desc
 ```
 #### Side-by-Side Comparison of Deal Stages
+-- Provides a clear comparison of the number of deals at different stages for each manager, helping to identify which stages need more attention and where managers excel.
 ```sql
 select manager, deal_stage, count(deal_stage) as count
 from SALES_pip
 group by manager,deal_stage
 order by manager, count desc
 ```
+
 #### Most Successful Product Types
---What product type has had the most successfull(won) deaals?
+-- Identifies which product types are most successful in closing deals, helping to focus sales efforts and marketing strategies on high-performing products.
 ```sql
 select product, count(product) as Count
 from SALES_pip
